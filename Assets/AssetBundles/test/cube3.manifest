@@ -1,0 +1,37 @@
+BundleVersion: 202511170712
+ManifestFileVersion: 0
+UnityVersion: 6000.0.58f2
+CRC: 872452442
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 6e3cb7399906a526a2b001af32e16c7a
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 02891d9e88e5268131f274408ebabf71
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: a76934ccea4901c7b193e5fe240b2c1a
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Art/Prefabs/TestCube3.prefab
+Dependencies: []
+
