@@ -35,6 +35,10 @@ namespace InvigoRetail.AssetBundleBuilderEditor
                     m_outputPath = selected + "/";
                 }
             }
+            if (GUILayout.Button("Open", GUILayout.Width(45)))
+            {
+                EditorUtility.RevealInFinder(m_outputPath);
+            }
             EditorGUILayout.EndVertical();
 
             if (!Directory.Exists(m_outputPath))
@@ -45,7 +49,44 @@ namespace InvigoRetail.AssetBundleBuilderEditor
             {
                 BuildAssetBundles();
             }
+            else if (GUILayout.Button(nameof(AddDependencies)))
+            {
+                AddDependencies();
+            }
         }
+
+        private void AddDependencies()
+        {
+            UnityEngine.Object asset;
+            string dependencyPath;
+            AssetImporter importer;
+
+            foreach (var bundleName in AssetDatabase.GetAllAssetBundleNames())
+            {
+                foreach (var assetPath in AssetDatabase.GetAssetPathsFromAssetBundle(bundleName))
+                {
+                    asset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(assetPath);
+
+                    foreach (var dependency in EditorUtility.CollectDependencies((new UnityEngine.Object[] { asset })))
+                    {
+                        dependencyPath = AssetDatabase.GetAssetPath(dependency);
+                        if (string.IsNullOrEmpty(dependencyPath) || dependencyPath.StartsWith("Library"))
+                        {
+                            continue;
+                        }
+
+                        importer = AssetImporter.GetAtPath(dependencyPath);
+                        if (importer != null)
+                        {
+                            importer.assetBundleName = bundleName;
+
+                            Debug.Log("Assigned to bundle: " + dependency.name + " (" + dependencyPath + ")");
+                        }
+                    }
+                }
+            }
+        }
+
         private void BuildAssetBundles()
         {
             var baseManifest = BuildPipeline.BuildAssetBundles(m_outputPath, m_buildOption, m_buildTarget);
@@ -74,7 +115,7 @@ namespace InvigoRetail.AssetBundleBuilderEditor
                 reader.Close();
 
                 var writer = new StreamWriter(manifestPath, false);
-                writer.WriteLine("BundleVersion: " + GetCurrentVersion() + "\n" + manifestText);
+                writer.WriteLine($"BundleVersion: {GetCurrentVersion()}\n{manifestText}");
                 writer.Close();
             }
         }
